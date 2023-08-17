@@ -1,37 +1,73 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import ExampleComponents from "../Examples";
 import ribbon from "./ribbon.png";
 import logo from "./logo.png";
 import DatePicker from "react-datepicker";
 
 const Example = () => {
-  const [isOpen, setIsOpen] = useState(true);
   const [startDate, setStartDate] = useState(new Date());
-  const [isScrolled, setIsScrolled] = useState(true);
+  const [holidayName, setHolidayName] = useState("");
+  const [showOverlay, setShowOverlay] = useState(false);
 
-  useEffect(() => {
-    document.addEventListener("scroll", handleScroll);
-  }, []);
+  // List of holidays
+  const holidayData = [
+    { date: new Date("2023-08-14"), name: "Holiday 1" },
+    { date: new Date("2023-08-23"), name: "Holiday 2" },
+    { date: new Date("2023-08-26"), name: "Holiday 3" },
+    { date: new Date("2023-08-28"), name: "Holiday 4" },
+    { date: new Date("2023-09-01"), name: "Holiday 5" },
+  ];
 
-  const handleScroll = () => {
-    const Show = window.scrollY < 400;
-    if (Show) {
-      setIsScrolled(true);
+  // Array to Highlight Holidays
+  const highlightedHolidays = [
+    {
+      "react-datepicker__day--highlighted-custom-3": holidayData.map(
+        (entry) => entry.date,
+      ),
+    },
+  ];
+
+  // To check if dates are identical
+  const isSameDate = (date1, date2) => {
+    return (
+      date1.getDate() === date2.getDate() &&
+      date1.getMonth() === date2.getMonth() &&
+      date1.getFullYear() === date2.getFullYear()
+    );
+  };
+
+  // Display Holidays on Hovering
+  const handleHover = (date) => {
+    const clickedHoliday = holidayData.find((holiday) =>
+      isSameDate(date, holiday.date),
+    );
+    if (clickedHoliday) {
+      setHolidayName(clickedHoliday.name);
+      setShowOverlay(true);
     } else {
-      setIsScrolled(false);
+      setShowOverlay(false);
     }
   };
 
+  const handleDismissOverlay = () => {
+    setShowOverlay(false);
+  };
+
   return (
-    <DatePicker
-      open={isOpen && isScrolled}
-      selected={startDate}
-      onChange={(date) => {
-        setStartDate(date);
-        setIsOpen(false);
-      }}
-      onInputClick={() => setIsOpen(true)}
-    />
+    <div>
+      <DatePicker
+        selected={startDate}
+        highlightDates={highlightedHolidays}
+        onChange={(date) => setStartDate(date)}
+        onDayMouseEnter={handleHover}
+        onDayMouseLeave={handleDismissOverlay}
+      />
+      {showOverlay && (
+        <div className="overlayclass" onClick={handleDismissOverlay}>
+          {holidayName} !
+        </div>
+      )}
+    </div>
   );
 };
 

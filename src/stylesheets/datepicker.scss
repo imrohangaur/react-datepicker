@@ -87,7 +87,8 @@
 
 .react-datepicker__header {
   text-align: center;
-  background-color: $datepicker__background-color;
+  // background-color: $datepicker__background-color;
+  background-color: #0f8ae8;
   border-bottom: 1px solid $datepicker__border-color;
   border-top-left-radius: $datepicker__border-radius;
   padding: 8px 0;
@@ -216,6 +217,7 @@
 
 .react-datepicker__month-container {
   float: left;
+  background-color: #0f8ae8;
 }
 
 .react-datepicker__year {
@@ -425,6 +427,12 @@
 
     &-custom-2 {
       color: green;
+    }
+
+    &-custom-3 {
+      border-radius: $datepicker__border-radius;
+      background-color: $datepicker__highlighted-custom-color;
+      color: #fff;
     }
   }
 
@@ -676,4 +684,18 @@
   width: 1em;
   height: 1em;
   vertical-align: -0.125em;
+}
+
+.overlayclass {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 16px;
+  padding: 2%;
+  z-index: 1000;
 }
